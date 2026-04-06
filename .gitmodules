@@ -1,0 +1,6 @@
+[submodule "lib/nergassert"]
+	path = lib/nergassert
+	url = git@github.com:nergal-adventures/nergassert.git
+[submodule "lib/nergger"]
+	path = lib/nergger
+	url = git@github.com:nergal-adventures/nergger.git
