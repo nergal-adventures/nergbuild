@@ -17,9 +17,6 @@
 #define CF_STD "std=c99"
 #define CF_VERBOSE "v"
 
-typedef struct Command command_t;
-typedef struct DynamicArray darray_t;
-
 typedef struct DynamicArray {
   size_t size;
   size_t capacity;
@@ -34,8 +31,8 @@ typedef struct Command {
   darray_t *c_output;
 } command_t;
 
-darray_t *init_darray();
-command_t *init_cmd_items();
+darray_t *init_darray(void);
+command_t *init_cmd_items(void);
 
 void darray_append_items_null(darray_t *array, ...);
 void append_main_cmd(const command_t *cmd);
