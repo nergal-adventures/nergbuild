@@ -1,5 +1,6 @@
 #include "builder.h"
 #include "logger.h"
+#include <libgen.h>
 #include <assert.h>
 #include <dirent.h>
 #include <stdlib.h>
@@ -39,6 +40,7 @@ command_t *init_cmd_items(void)
   return cmd;
 }
 
+#define MAX_CMD_SIZE 1024
 char *consolidate_cmd(const command_t *cmd)
 {
   assert(cmd != NULL);
@@ -49,7 +51,7 @@ char *consolidate_cmd(const command_t *cmd)
   assert(cmd->c_files != NULL);
   assert(cmd->c_output != NULL);
 
-  char *cmd_res = malloc(sizeof(char *));
+  char *cmd_res = malloc(sizeof(char *) * MAX_CMD_SIZE);
 
   for (int i = 0; i < cmd->main_cmd->size; i++) {
     const char *item = cmd->main_cmd->elements[i];
@@ -64,14 +66,27 @@ char *consolidate_cmd(const command_t *cmd)
     strcat(cmd_res, " ");
   }
 
-  for (int i = 0; i< cmd-> c_headers->size; i++) {
+  for (int i = 0; i < cmd->c_headers->size; i++) {
     const char *item = cmd->c_headers->elements[i];
     strcat(cmd_res, "-I./");
     strcat(cmd_res, item);
     strcat(cmd_res, " ");
   }
 
-  // LOG_INFO("CMD_RES: %s", cmd_res);
+  for (int i = 0; i < cmd->c_files->size; i++) {
+    const char *item = cmd->c_files->elements[i];
+    strcat(cmd_res, "./src/");
+    strcat(cmd_res, item);
+    strcat(cmd_res, " ");
+  }
+
+  for (int i = 0; i < cmd->c_output->size; i++) {
+    const char *item = cmd->c_output->elements[i];
+    strcat(cmd_res, "-o ./build/");
+    strcat(cmd_res, item);
+    strcat(cmd_res, ".o");
+  }
+
   return cmd_res;
 }
 
@@ -127,6 +142,21 @@ void append_c_flags(const command_t *cmd)
 void append_c_files(const command_t *cmd)
 {
   assert(cmd != NULL);
+
+  DIR *current_dir = opendir(CURRENT_DIR "/src");
+
+  while (current_dir != NULL) {
+    struct dirent *file = readdir(current_dir);
+    if (file != NULL) {
+      char *file_name = file->d_name;
+      if (strstr(file_name, ".c")) {
+        darray_append_items(cmd->c_files, file_name);
+      }
+    } else {
+      closedir(current_dir);
+      break;
+    }
+  }
 }
 
 void append_c_headers(const command_t *cmd)
@@ -138,8 +168,8 @@ void append_c_headers(const command_t *cmd)
   while (current_dir != NULL) {
     struct dirent *file = readdir(current_dir);
     if (file != NULL) {
-      if (strcmp(file->d_name, HEADERS_DIR) == 0) {
-        char *header_dir = file->d_name;
+      char *header_dir = file->d_name;
+      if (strcmp(header_dir, HEADERS_DIR) == 0) {
         darray_append_items(cmd->c_headers, header_dir);
         break;
       }
@@ -153,4 +183,7 @@ void append_c_headers(const command_t *cmd)
 void append_c_output(const command_t *cmd)
 {
   assert(cmd != NULL);
+  char *current_dir = getenv("PWD");
+  assert(current_dir != NULL);
+  darray_append_items(cmd->c_output, basename(current_dir));
 }

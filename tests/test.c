@@ -60,6 +60,58 @@ void test_append_only_c_headers(void)
       );
 }
 
+void test_append_only_c_files(void)
+{
+  command_t *cmd = init_cmd_items();
+
+  append_c_files(cmd);
+  assert_not_null(cmd->c_files->elements, "c_files->elements must not be null");
+
+  char *full_cmd = consolidate_cmd(cmd);
+  assert_equals_str(
+      "./src/builder.c ",
+      full_cmd,
+      "full_cmd must contain all the references to the c files"
+      );
+}
+
+void test_append_only_c_output(void)
+{
+  command_t *cmd = init_cmd_items();
+  
+  append_c_output(cmd);
+  assert_not_null(cmd->c_output->elements, "c_output->elements must not be null");
+
+  char *full_cmd = consolidate_cmd(cmd);
+  assert_equals_str(
+      "-o ./build/Nergbuild.o",
+      full_cmd,
+      "full_cmd must contain the output for the compilation process"
+      );
+}
+
+void test_create_full_command(void)
+{
+  command_t *cmd = init_cmd_items();
+
+  append_main_cmd(cmd);
+  append_c_flags(cmd);
+  append_c_headers(cmd);
+  append_c_files(cmd);
+  append_c_output(cmd);
+
+  char *full_cmd = consolidate_cmd(cmd);
+  assert_equals_str(
+      "gcc "                                    
+      "-Wall -Wextra -Werror -std=c99 -v -gdb " 
+      "-I./include "                            
+      "./src/builder.c "                        
+      "-o ./build/Nergbuild.o",
+      full_cmd,
+      "full_cmd must contain all the paramenters"
+      );
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -68,6 +120,9 @@ int main(int argc, char *argv[])
   test_append_only_main_cmd();
   test_append_only_c_flags();
   test_append_only_c_headers();
+  test_append_only_c_files();
+  test_append_only_c_output();
+  test_create_full_command();
 
   // command_t *cmd = init_cmd_items();
   // append_main_cmd(cmd);
