@@ -1,19 +1,19 @@
 # Build libs
 gcc \
-  -Werror -Wpedantic -Wall -g -c -std=c99 \
+  -Werror -Wpedantic -Wall -g -c -std=c23 \
   -I./lib/nergassert/include \
   ./lib/nergassert/src/nergassert.c \
   -o ./build/nergassert.o 
 
 gcc \
-  -Werror -Wpedantic -Wall -g -c -std=c99 \
+  -Werror -Wpedantic -Wall -g -c -std=c23 \
   -I./lib/nergger/include \
   ./lib/nergger/src/logger.c \
   -o ./build/logger.o 
 
 # Build builder
 gcc \
-  -Werror -Wpedantic -Wall -g -c -std=c99 \
+  -Werror -Wpedantic -Wall -g -c -std=c23 \
   -I./include \
   -I./lib/nergassert/include \
   -I./lib/nergger/include \
@@ -22,7 +22,7 @@ gcc \
 
 # Build tests
 gcc \
-  -Werror -Wpedantic -Wall -g -c -std=c99 \
+  -Werror -Wpedantic -Wall -g -c -std=c23 \
   -Iinclude \
   -I./lib/nergassert/include \
   -I./lib/nergger/include \
@@ -31,7 +31,7 @@ gcc \
 
 # Link them togheter 
 gcc \
-  -Werror -Wpedantic -Wall -g -std=c99 \
+  -Werror -Wpedantic -Wall -g -std=c23 \
   ./build/nergassert.o \
   ./build/logger.o \
   ./build/builder.o \

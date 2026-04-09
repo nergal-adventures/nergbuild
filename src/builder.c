@@ -51,7 +51,8 @@ char *consolidate_cmd(const command_t *cmd)
   assert(cmd->c_files != NULL);
   assert(cmd->c_output != NULL);
 
-  char *cmd_res = malloc(sizeof(char *) * MAX_CMD_SIZE);
+  char *cmd_res = malloc(sizeof(char) * MAX_CMD_SIZE);
+  cmd_res[0] = '\0';
 
   for (int i = 0; i < cmd->main_cmd->size; i++) {
     const char *item = cmd->main_cmd->elements[i];

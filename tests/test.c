@@ -84,7 +84,7 @@ void test_append_only_c_output(void)
 
   char *full_cmd = consolidate_cmd(cmd);
   assert_equals_str(
-      "-o ./build/Nergbuild.o",
+      "-o ./build/nergbuild.o",
       full_cmd,
       "full_cmd must contain the output for the compilation process"
       );
@@ -106,7 +106,7 @@ void test_create_full_command(void)
       "-Wall -Wextra -Werror -std=c99 -v -gdb " 
       "-I./include "                            
       "./src/builder.c "                        
-      "-o ./build/Nergbuild.o",
+      "-o ./build/nergbuild.o",
       full_cmd,
       "full_cmd must contain all the paramenters"
       );
