@@ -36,7 +36,7 @@ void test_append_only_c_flags(void)
 
   char *full_cmd = consolidate_cmd(cmd);
   assert_equals_str(
-      "-Wall -Wextra -Werror -std=c99 -v -gdb ", 
+      "-Wpedantic -Werror -std=c99 -v -gdb ", 
       full_cmd, 
       "full_cmd must has not all the flags"
       );
@@ -103,7 +103,7 @@ void test_create_full_command(void)
   char *full_cmd = consolidate_cmd(cmd);
   assert_equals_str(
       "gcc "                                    
-      "-Wall -Wextra -Werror -std=c99 -v -gdb " 
+      "-Wpedantic -Werror -std=c99 -v -gdb " 
       "-I./include "                            
       "./src/builder.c "                        
       "-o ./build/nergbuild.o",

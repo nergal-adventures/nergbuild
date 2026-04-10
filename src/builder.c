@@ -131,8 +131,7 @@ void append_c_flags(const command_t *cmd)
 
   darray_append_items(
       cmd->c_flags,
-      CF_WARNINGS_ALL,
-      CF_WARNINGS_EXTRA,
+      CF_PEDANTIC,
       CF_WARNINGS_ERROR,
       CF_STD,
       CF_VERBOSE,

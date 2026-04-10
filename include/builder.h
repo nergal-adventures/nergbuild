@@ -11,6 +11,7 @@
 
 #define C_MAIN_COMMAND "gcc"
 #define CF_WARNINGS_ALL "Wall"
+#define CF_PEDANTIC "Wpedantic"
 #define CF_WARNINGS_EXTRA "Wextra"
 #define CF_WARNINGS_ERROR "Werror"
 #define CF_DEBUG "gdb"
